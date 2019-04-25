@@ -1,4 +1,4 @@
-import random as r
+﻿import random as r
 
 from io import BytesIO
 from datetime import datetime
@@ -268,10 +268,10 @@ def login(request):
                 response = cookie_tools.count_cookie(request=request, context=msg)
                 return response
 
-
+@encry_tools.require_login
 def logout(request):
     '''
-    登出页面，根据不同的人，登出存储的登录时间方式不一致，超管不存登录时间
+    登出页面，根据不同的人，登出存储的登录时间方式不一致，超管不存在登录时间
     :param request: 请求对象
     :return: 响应对象
     '''
