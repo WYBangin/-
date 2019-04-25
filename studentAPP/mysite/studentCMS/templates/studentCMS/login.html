@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+登录
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 card">
+                <div class="space"></div>
+                <form class="form-horizontal" action="/studentCMS/login/" method="POST">
+                    {% csrf_token %}
+                    <p style="color: red;">{{msg}}</p>
+                    <div class="form-group">
+                        <label for="identity" class="col-sm-2 control-label">身份</label>
+                        <div class="col-sm-4">
+                            <select name="identity" id="identity">
+                                <option value="1">学生</option>
+                                <option value="2">教师</option>
+                                <option value="3">管理员</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="name" autocomplete="off" name="name" placeholder="请输入您的姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="password" autocomplete="off" name="password" placeholder="请输入您的密码">
+                        </div>
+                    </div>
+                    {% if count > 3 %}
+                    <div class="form-group">
+                        <label for="code" class="col-sm-2 control-label">验证码</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="code" class="form-control" autocomplete="off" placeholder="不区分大小写">
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" onclick="mod_code()" title="换一张"><img id="myCode" src="{% url 'studentCMS:code' %}" alt="验证码"></a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" onclick="mod_code()" title="换一张" style="text-decoration: none">看不清，换一张</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-6">
+                            <button type="submit" class="btn btn-default">登录</button>
+                        </div>
+                    </div>
+                </form>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本平台在服务中提供的任何软件、网站、商业标识、版面设计、排版方式、文字、图片、图形、
+                    音频、视频、有关数据等内容、功能和服务的著作权、商标权、专利权、商业秘密等知识产权均受中华人民
+                    共和国法律法规和相应的国际条约保护，本平台所有者或技术支持方享有上述知识产权，但相关权利人依照
+                    法律规定应享有的权利除外。
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您在使用本平台的过程中，可能会使用到由第三方开发的在本平台运行的功能、软件或服务，用户
+                    除遵守本协议相关规定以外，还应遵守第三方相关规定，并尊重第三方权利人对其功能、软件、服务及其所
+                    包含内容的相关权利。
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未经本平台或相关权利人书面同意，您不得为任何商业或非商业目的自行或许可任何第三方实施、
+                    利用和转让。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function mod_code() {
+        $("#myCode").attr("src", "/studentCMS/code/?id="+Math.random())
+    }
+</script>
+{% endblock %}

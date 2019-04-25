@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+个人中心
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            {# flag是3表示学生，flag为2表示教师 #}
+            {% if request.session.flag == 3 %}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">个人中心</h4>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <div class="panel-body">
+                            <div class="row text-right" style="margin-right: 10px;">
+                                <button onclick="mod_msg(this)" class="btn btn-primary">编辑个人资料</button>
+                            </div>
+                            <div style="height: 15px;"></div>
+                            <p style="color: red">{{msg}}</p>
+                            <div style="height: 15px;"></div>
+                            <table class="table table-striped table-bordered table-hover text-center" id="my_center1">
+                                <tr>
+                                    <td>姓名</td>
+                                    <td>{{request.session.loginUser.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>年龄</td>
+                                    <td>{{own.age}}</td>
+                                </tr>
+                                <tr>
+                                    <td>性别</td>
+                                    <td>{{own.gender}}</td>
+                                </tr>
+                                <tr>
+                                    <td>照片</td>
+                                    <td><img src="/{{own.photo}}" alt="学生照片" style="height: 50px; height: 50px;"></td>
+                                </tr>
+                                <tr>
+                                    <td>入学时间</td>
+                                    <td>{{own.enter_date}}</td>
+                                </tr>
+                                <tr>
+                                    <td>备注</td>
+                                    <td>{{own.remark}}</td>
+                                </tr>
+                                <tr>
+                                    <td>上次登录时间</td>
+                                    <td>{% firstof request.session.loginUser.last_login '无' %}</td>
+                                </tr>
+                            </table>
+                            {# 如果用户id是my_center进入查看页面，如果是my_center_edit1则进入修改个人资料页面 #}
+                            <table class="table table-striped table-bordered table-hover text-center" id="my_center_edit1" style="display: none;">
+                                <form action="{% url 'studentCMS:my_center_edit' request.session.loginUser.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>{{request.session.loginUser.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>年龄</td>
+                                        <td><input type="number" class="form-control" value="{{own.age}}" name="age"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>性别</td>
+                                        <td>
+                                            {% if own.gender == "男" %}
+                                            <input type="radio" checked value="男" name="gender">男
+                                            <input type="radio" value="女" name="gender">女
+                                            {% else %}
+                                            <input type="radio" value="男" name="gender">男
+                                            <input type="radio" checked value="女" name="gender">女
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>照片</td>
+                                        <td>
+                                            <input type="file" class="form-control picture" name="photo" id="photo">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>入学时间</td>
+                                        <td>
+                                            <input type="datetime-local" name="enter_date" id="enter_date" value="{{own.enter_date}}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>备注</td>
+                                        <td>
+                                            <input type="text" name="remark" id="remark" autocomplete="off" value="{{own.remark}}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>上次登录时间</td>
+                                        <td>{% firstof own.last_login '无' %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" class="btn btn-block btn-success" value="保存修改">
+                                        </td>
+                                    </tr>
+                                </form>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if request.session.flag == 2 %}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">个人中心</h4>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <div class="panel-body">
+                            <div class="row text-right">
+                                <button onclick="mod_tea_msg(this)" class="btn btn-primary">编辑个人资料</button>
+                            </div>
+                            <div style="height: 15px;"></div>
+                            <p style="color: red">{{msg}}</p>
+                            <div style="height: 15px;"></div>
+                            <table class="table table-striped table-bordered table-hover text-center" id="my_center2">
+                                <tr>
+                                    <td>姓名</td>
+                                    <td>{{request.session.loginUser.teaName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>年龄</td>
+                                    <td>{{own.teaAge}}</td>
+                                </tr>
+                                <tr>
+                                    <td>性别</td>
+                                    <td>{{own.teaGender}}</td>
+                                </tr>
+                                <tr>
+                                    <td>照片</td>
+                                    <td><img src="/{{own.teaPhoto}}" alt="教师照片" style="height: 50px; height: 50px;"></td>
+                                </tr>
+                                <tr>
+                                    <td>上次登录时间</td>
+                                    <td>{% firstof own.teaLast_login '无' %}</td>
+                                </tr>
+                            </table>
+
+                            {# 如果用户id是my_center进入查看页面，如果是my_center_edit则进入修改个人资料页面 #}
+                            <table class="table table-striped table-bordered table-hover text-center" id="my_center_edit2" style="display: none;">
+                                <form action="{% url 'studentCMS:my_center_edit' request.session.loginUser.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>{{request.session.loginUser.teaName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>年龄</td>
+                                        <td><input type="number" class="form-control" value="{{own.teaAge}}" name="age"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>性别</td>
+                                        <td>
+                                            {% if own.teaGender == "男" %}
+                                            <input type="radio" checked value="男" name="gender">男
+                                            <input type="radio" value="女" name="gender">女
+                                            {% else %}
+                                            <input type="radio" value="男" name="gender">男
+                                            <input type="radio" checked value="女" name="gender">女
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>照片</td>
+                                        <td>
+                                            <input type="file" class="form-control picture" name="avatar" id="avatar">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>上次登录时间</td>
+                                        <td>{% firstof own.teaLast_login '无' %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" class="btn btn-block btn-success" value="保存修改">
+                                        </td>
+                                    </tr>
+                                </form>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function mod_msg(node) {
+        $("#my_center1").toggle()
+        $("#my_center_edit1").toggle()
+    }
+
+    function mod_tea_msg(node) {
+        $("#my_center2").toggle()
+        $("#my_center_edit2").toggle()
+    }
+</script>
+{% endblock %}

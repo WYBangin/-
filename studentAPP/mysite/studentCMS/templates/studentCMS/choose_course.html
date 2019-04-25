@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+选择课程
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card text-left">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">选择课程</h2>
+                        <p class="category">温馨提示：课程最多选择四门，一旦选择成功，不可修改</p>
+                    </div>
+                    <div class="panel-body">
+                        <p style="color: red">{{msg}}</p>
+                        <form class="form-horizontal" action="{% url 'studentCMS:choose_course' %}" method="post">
+                            {% csrf_token %}
+
+                            <div class="form-group" style="margin-left: 10px;">
+                                {% for course in courses %}
+                                <label for="cos">{{course.course}}</label>
+                                <input type="checkbox" name="cos" value="{{course.course}}">
+                                <span style="margin-left: 20px;">相关描述：{{course.desc}}</span>
+                                <br>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-10 col-sm-1 text-right">
+                                    <a href="{% url 'studentCMS:user' %}" class="btn btn-success">个人信息</a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-default btn-danger" value="选择课程">选择课程</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

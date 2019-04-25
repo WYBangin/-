@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+提示邮箱
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9 col-xs-offset-1">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">提示邮箱</h2>
+                    </div>
+                    <div class="panel-body">
+                        <h1>尊敬的先生/女士，你好：</h1>
+                        <h2>&nbsp;&nbsp;&nbsp;&nbsp;{{msg}}</h2>
+                        <h3><a href="{% url 'studentCMS:login' %}" >请登录</a></h3>
+                    </div>
+                    <div>
+                        <img src="/static/img/lb_3.jpg" style="width: 650px; height: 200px; margin-left: 50px; margin-bottom: 30px;" alt="装饰图">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

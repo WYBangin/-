@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+发布公告
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+    .msg {
+        height: 150px;
+        width: 800px;
+        border: 1px solid blue;
+        border-radius: 20px;
+        margin: 0 auto 15px;
+        overflow: auto;
+    }
+    .msg li {
+        list-style: none;
+    }
+    .cen {
+        width: 600px;
+        height: 180px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .cen #btn {
+        margin-right: 60px;
+        margin-top: 15px;
+    }
+    #cmt {
+        color: orangered;
+    }
+    #tim {
+        display: none;
+    }
+</style>
+<!--<script src="/static/tiny_mce/tiny_mce.js"></script>-->
+<!--<script src="/static/js/lib/jQuery2.1.4/jquery-2.1.4.js"></script>-->
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">教师专属</h4>
+                        <p class="category">公告预览</p>
+                    </div>
+                    <form class="form-horizontal" action="/studentCMS/tea_notice/" method="POST">
+                        {% csrf_token %}
+                        <p style="color: red; margin-left: 10px;">{{msg}}</p>
+                        <textarea id="tim" name="tim" rows="10" cols="40"></textarea>
+                        <div class="msg">
+                            <ul class="list">
+                                <!-- <li>你好啊</li> -->
+                            </ul>
+                        </div>
+                        <div class="cen">
+                            <textarea id="cmt" name="cmt" rows="8" cols="40" placeholder="发布公告"></textarea>
+                            <select id="se" name="se" style="display: none;">
+                                <option value ="{{request.session.loginUser.teaName}}">{{request.session.loginUser.teaName}}</option>
+                            </select>
+                            <br>
+                        </div>
+                        <div class="text-center">
+                            <button id="btn" class="btn btn-danger" onclick="comment()">提交留言</button>
+                        </div>
+                    </form>
+                    <div style="height: 15px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // tinyMCE.init({
+    //     "mode": 'textareas',
+    //     'theme': 'advanced',
+    //     'width': 600,
+    //     'height': 400,
+    // });
+
+    function comment() {
+        $(".list").prepend("<li>"+$("#tim").val()+"&nbsp;&nbsp;&nbsp;&nbsp;留言者："+$("#se").val()+"&nbsp;&nbsp;发布内容："+$("#cmt").val()+"</li>");
+        // $(".list").prepend("<li>"+$("#cmt").val()+"&nbsp;&nbsp;"+$("#se").val()+"&nbsp;&nbsp;"+$("#tim").val()+"</li>");
+    }
+    function getTime() {
+        var date=new Date();
+        var year=date.getFullYear();
+        var month=date.getMonth()+1;
+        var day=date.getDate();
+        var hours=date.getHours();
+        var mins=date.getMinutes();
+        var s=date.getSeconds();
+        // 通过id获取对应的文本域
+        var tim=document.getElementById("tim");
+        tim.innerHTML = year +"年"+ month + "月"+ day + "日 "+ hours +":"+ mins +":"+ s;
+    }
+    setInterval(getTime,1000);
+
+</script>
+{% endblock %}

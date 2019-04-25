@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}
+教师修改
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card text-center" style="background-color: peachpuff">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">修改信息</h2>
+                        <div style="height: 10px;"></div>
+                        <p style="color: red">{{msg}}</p>
+                    </div>
+                    <div class="panel-body text-danger">
+                        <form action="{% url 'studentCMS:update_teacher' teacher.id %}" method="post">
+                            {% csrf_token %}
+
+                            <label for="name">教师姓名：</label>
+                            <input type="text" name="name" id="name" disabled value="{{teacher.teaName}}">
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="age">教师年龄：</label>
+                            <input type="number" name="age" id="age" value="{{teacher.teaAge}}">
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="gender">教师性别：</label>
+                            {% if teacher.teaGender == "男" %}
+                            <input type="radio" checked value="男" name="gender">男
+                            <input type="radio" value="女" name="gender">女
+                            {% else %}
+                            <input type="radio" value="男" name="gender">男
+                            <input type="radio" checked value="女" name="gender">女
+                            {% endif %}
+                            <p style="height: 6px;"></p>
+                            <br>
+                            <input type="submit" value="修改教师信息">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

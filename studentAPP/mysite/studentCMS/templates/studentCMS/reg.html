@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+注册
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 card">
+                <div class="space"></div>
+                <form class="form-horizontal" action="/studentCMS/reg/" method="POST">
+                    {% csrf_token %}
+                    <p style="color: red;">{{msg}}</p>
+                    <div class="form-group">
+                        <label for="identity" class="col-sm-2 control-label">身份</label>
+                        <div class="col-sm-4">
+                            <select name="identity" id="identity">
+                                <option value="1">学生</option>
+                                <option value="2">教师</option>
+                                <option value="3">管理员</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cls" class="col-sm-2 control-label">班级</label>
+                        <div class="col-sm-4">
+                            <select name="cls" id="cls">
+                                <option value="学生必选">学生必填选项</option>
+                                {% for class in classes %}
+                                <option value="{{class.className}}">{{class.className}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="name" autocomplete="off" name="name" placeholder="请输入您的姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="password" autocomplete="off" name="password" placeholder="请输入您的密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_pwd" class="col-sm-2 control-label">确认密码</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="confirm_pwd" autocomplete="off" name="confirm_pwd" placeholder="请确认密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="code" class="col-sm-2 control-label">验证码</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="code" class="form-control" autocomplete="off" placeholder="不区分大小写">
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" onclick="mod_code()" title="换一张"><img id="myCode" src="{% url 'studentCMS:code' %}" alt="验证码"></a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" onclick="mod_code()" title="换一张" style="text-decoration: none">看不清，换一张</a>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-8">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="check_id">同意博雅管理系统安全协议
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-6">
+                            <button type="submit" class="btn btn-default btn-primary">注册</button>
+                        </div>
+                    </div>
+                </form>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为加强
+                    相关系统数据的安全保密管理，贯彻落实《中华人民共和国保守国家秘密法》、
+                    《中华人民共和国保守国家秘密法实施办法》等有关法律法规，确保数据的安全保密，
+                    促进数据合法、有效利用，防止发生失泄密事件，防范非法使用行为。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function mod_code() {
+        $("#myCode").attr("src", "/studentCMS/code/?id="+Math.random())
+    }
+</script>
+{% endblock %}

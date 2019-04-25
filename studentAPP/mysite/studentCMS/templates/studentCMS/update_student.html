@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+学生修改
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card text-center" style="background-color: peachpuff">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">修改信息</h2>
+                        <div style="height: 10px;"></div>
+                        <p style="color: red">{{msg}}</p>
+                    </div>
+                    <div class="panel-body text-danger">
+                        <form action="{% url 'studentCMS:update_student' student.id %}" method="post">
+                            {% csrf_token %}
+
+                            <label for="name">学生姓名：</label>
+                            <input type="text" name="name" id="name" disabled value="{{student.name}}">
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="age">学生年龄：</label>
+                            <input type="number" name="age" id="age" value="{{student.age}}">
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="gender">学生性别：</label>
+                            {% if student.gender == "男" %}
+                            <input type="radio" checked value="男" name="gender">男
+                            <input type="radio" value="女" name="gender">女
+                            {% else %}
+                            <input type="radio" value="男" name="gender">男
+                            <input type="radio" checked value="女" name="gender">女
+                            {% endif %}
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="enter_date">入学时间：</label>
+                            <input type="datetime-local" name="enter_date" id="enter_date" value="{{student.enter_date}}">
+                            <p style="height: 2px;"></p>
+                            <br>
+                            <label for="remark">备注：</label>
+                            <input type="text" name="remark" id="remark" autocomplete="off" value="{{student.remark}}">
+                            <p style="height: 6px;"></p>
+                            <br>
+                            <input type="submit" value="修改学生信息">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

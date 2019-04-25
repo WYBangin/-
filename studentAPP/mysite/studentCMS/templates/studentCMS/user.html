@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+用户页面
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        {% if request.session.flag == 3 %}
+                        <h4 class="title">学生自己</h4>
+                        <div style="height: 10px;"></div>
+                        <p style="color: red">{{msg1}}</p>
+                        {% else %}
+                        <h4 class="title">所有学生</h4>
+                        <div style="height: 10px;"></div>
+                        <p style="color: red">{{msg1}}</p>
+                        {% endif %}
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <tr>
+                                <td>学生</td>
+                                <td>姓名</td>
+                                <td>年龄</td>
+                                <td>性别</td>
+                                <td>入学时间</td>
+                                <td>照片</td>
+                                <td>备注</td>
+                                <td>上次登录时间</td>
+                                {% if request.session.flag == 3 %}
+                                    <td>选课</td>
+                                    <td>分数</td>
+                                    <td>修改</td>
+<!--                                    <td>删除</td>-->
+                                {% endif %}
+                            </tr>
+
+                            {% for user in students %}
+                            {% if request.session.loginUser.name == user.name or request.session.flag == 2 %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.age}}</td>
+                                <td>{{user.gender}}</td>
+                                <td>{{user.enter_date}}</td>
+                                <td><img src="/{{user.photo}}" style="height: 50px; height: 50px;"></td>
+                                <td>{{user.remark}}</td>
+                                <td>{% firstof user.last_login '无' %}</td>
+                                {% if request.session.flag == 3 %}
+                                    <td>
+                                        <a href="{% url 'studentCMS:get_select_course' user.id %}" class="btn btn-warning">查看选课</a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'studentCMS:get_score' user.id %}" class="btn btn-danger">查看分数</a>
+                                    </td>
+                                    {% if request.session.loginUser.name == user.name %}
+                                        <td>
+                                            <a href="{% url 'studentCMS:update_student' user.id %}" class="btn btn-danger">修改</a>
+                                        </td>
+<!--                                        <td>-->
+<!--                                            <a onclick="return window.confirm('确定要删除该用户吗？');" href="{% url 'studentCMS:delete_student' user.id %}" class="btn btn-warning">删除</a>-->
+<!--                                        </td>-->
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                            {% endif %}
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="12"> 对不起，当前没有学生信息...
+                                    <a href="/studentCMS/reg/">请先添加学生</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            {% if request.session.flag == 2 %}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">教师个人信息</h4>
+                        <div style="height: 10px;"></div>
+                        <p style="color: red">{{msg2}}</p>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <tr>
+                                <td>教师</td>
+                                <td>姓名</td>
+                                <td>年龄</td>
+                                <td>性别</td>
+                                <td>照片</td>
+                                <td>上次登录时间</td>
+                                <td>查看选课</td>
+                                <td>所有分数</td>
+                                <td>修改</td>
+<!--                                <td>删除</td>-->
+                            </tr>
+
+                            {% for user in teachers %}
+                            {% if request.session.loginUser.teaName == user.teaName %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{user.teaName}}</td>
+                                <td>{{user.teaAge}}</td>
+                                <td>{{user.teaGender}}</td>
+                                <td><img src="/{{user.teaPhoto}}" style="height: 50px; height: 50px;"></td>
+                                <td>{% firstof user.teaLast_login '无' %}</td>
+                                <td>
+                                    <a href="{% url 'studentCMS:show_course'%}" class="btn btn-warning">所有选课</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'studentCMS:add_stu_score'%}" class="btn btn-warning">添加学生分数</a>
+                                    <a href="{% url 'studentCMS:get_all_score'%}" class="btn btn-danger">查看分数</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'studentCMS:update_teacher' user.id %}" class="btn btn-danger">修改</a>
+                                </td>
+<!--                                <td>-->
+<!--                                    <a onclick="return window.confirm('确定要删除该用户吗？');" href="{% url 'studentCMS:delete_teacher' user.id %}" class="btn btn-warning">删除</a>-->
+<!--                                </td>-->
+                            </tr>
+                            {% endif %}
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="8"> 对不起，当前没有教师信息...
+                                    <a href="/studentCMS/reg/">请先添加教师</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
