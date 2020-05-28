@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_studentCMS',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '123456',
     }
 }
 
