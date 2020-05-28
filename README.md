@@ -17,3 +17,7 @@
 * 运行命令 *
     studentAPP/mysite目录下, 执行 python manage.py runserver 0.0.0.0:9999 (9999是是端口号, 可修改)
     然后访问本地：http://127.0.0.1:9999/studentCMS/index/  (即可秀出你的操作)
+    http://127.0.0.1:9999/studentCMS/reg/ (注册页)
+    http://127.0.0.1:9999/studentCMS/login/ (登录页)
+
+-- 因为后面做了权限限制,可能直接让登录，可先通过http://127.0.0.1:9999/studentCMS/reg/ 注册账号
